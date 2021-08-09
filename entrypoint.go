@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
 	"os"
 	"os/exec"
@@ -157,16 +158,23 @@ func build(packageName, destDir string, platform map[string]string, ldflags stri
 			os.Exit(1)
 		}
 
-		md5FileName := fmt.Sprintf("%s-%s-%s.tar.gz.md5", inputName, platformKernel, platformArch)
+		// md5FileName := fmt.Sprintf("%s-%s-%s.tar.gz.md5", inputName, platformKernel, platformArch)
 
-		md5Cmd := exec.Command("/bin/sh", "-c", fmt.Sprintf("'pwd && md5sum %s | cut -c -32 > %s'", gzFileName, md5FileName))
+		// md5Cmd := exec.Command("/bin/sh", "-c", fmt.Sprintf("'pwd && md5sum %s | cut -c -32 > %s'", gzFileName, md5FileName))
+		md5Cmd := exec.Command("/bin/sh", "-c", fmt.Sprintf("'pwd && ls -la'"))
 		md5Cmd.Dir = destDirPath
 
+		var outb, errb bytes.Buffer
+		md5Cmd.Stdout = &outb
+		md5Cmd.Stderr = &errb
 		fmt.Println("Create md5 checksum file:", md5Cmd.String())
 		if err := md5Cmd.Run(); err != nil {
 			fmt.Println("An error occurred during md5 creation:", err)
+			fmt.Printf("md5 output: %s", errb.String())
 			os.Exit(1)
 		}
+		fmt.Printf("md5 output: %s", outb.String())
+
 	}
 }
 
