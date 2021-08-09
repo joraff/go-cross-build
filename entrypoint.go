@@ -233,7 +233,7 @@ func main() {
 	}
 
 	for _, f := range files {
-		fileList = append(fileList, f.Name())
+		fileList = append(fileList, filepath.Join(destDir, f.Name()))
 	}
 
 	fmt.Println(fmt.Sprintf(`::set-output name=files::%s`, strings.Join(fileList[:], " ")))
