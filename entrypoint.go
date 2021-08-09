@@ -236,4 +236,5 @@ func main() {
 	}
 
 	fmt.Println(fmt.Sprintf(`::set-output name=files::%s`, strings.Join(files[:], " ")))
+	fmt.Println(fmt.Sprintf(`set-output name=files::%s`, strings.Join(files[:], " ")))
 }
