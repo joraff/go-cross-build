@@ -159,7 +159,7 @@ func build(packageName, destDir string, platform map[string]string, ldflags stri
 
 		md5FileName := fmt.Sprintf("%s-%s-%s.tar.gz.md5", inputName, platformKernel, platformArch)
 
-		md5Cmd := exec.Command("md5sum", []string{"sh", "-c", fmt.Sprintf("\"%s  | cut -c -32 > %s\"", gzFileName, md5FileName)}...)
+		md5Cmd := exec.Command("sh", []string{"-c", fmt.Sprintf("\"%s  | cut -c -32 > %s\"", gzFileName, md5FileName)}...)
 		fmt.Println("Create md5 checksum file:", md5Cmd.String())
 		if err := md5Cmd.Run(); err != nil {
 			fmt.Println("An error occurred during md5 creation:", err)
