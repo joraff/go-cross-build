@@ -160,7 +160,7 @@ func build(packageName, destDir string, platform map[string]string, ldflags stri
 
 		md5FileName := fmt.Sprintf("%s-%s-%s.tar.gz.md5", inputName, platformKernel, platformArch)
 
-		md5Cmd := exec.Command("/bin/sh", "-c", fmt.Sprintf("\"/usr/bin/md5sum %s | cut -c -32 > %s\"", gzFileName, md5FileName))
+		md5Cmd := exec.Command("/bin/sh", "-c", fmt.Sprintf("'/usr/bin/md5sum %s | cut -c -32 > %s'", gzFileName, md5FileName))
 		var outb, errb bytes.Buffer
 		md5Cmd.Stdout = &outb
 		md5Cmd.Stderr = &errb
