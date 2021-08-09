@@ -222,4 +222,17 @@ func main() {
 		fmt.Printf("%s\n", output)
 	}
 
+	var files []string
+
+	err := filepath.Walk(destDir, func(path string, info os.FileInfo, err error) error {
+		files = append(files, path)
+		return nil
+	})
+
+	if err != nil {
+		fmt.Println("An error occurred while determining build files", err)
+		os.Exit(1)
+	}
+
+	fmt.Println(fmt.Sprintf(`::set-output name=files::%s`, strings.Join(files[:], " ")))
 }
