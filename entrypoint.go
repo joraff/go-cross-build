@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"io/ioutil"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -223,18 +224,18 @@ func main() {
 		fmt.Printf("%s\n", output)
 	}
 
-	var files []string
-
-	err := filepath.Walk(destDir, func(path string, info os.FileInfo, err error) error {
-		files = append(files, path)
-		return nil
-	})
+	files, err := ioutil.ReadDir(destDir)
+	var fileList []string
 
 	if err != nil {
 		fmt.Println("An error occurred while determining build files", err)
 		os.Exit(1)
 	}
 
-	fmt.Println(fmt.Sprintf(`::set-output name=files::%s`, strings.Join(files[:], " ")))
-	fmt.Println(fmt.Sprintf(`set-output name=files::%s`, strings.Join(files[:], " ")))
+	for _, f := range files {
+		fileList = append(fileList, f.Name())
+	}
+
+	fmt.Println(fmt.Sprintf(`::set-output name=files::%s`, strings.Join(fileList[:], " ")))
+	fmt.Println(fmt.Sprintf(`set-output name=files::%s`, strings.Join(fileList[:], " ")))
 }
